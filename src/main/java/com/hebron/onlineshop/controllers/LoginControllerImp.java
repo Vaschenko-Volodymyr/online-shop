@@ -20,9 +20,10 @@ public class LoginControllerImp implements LoginController {
     public Response login(String login, String password) {
 
         if (loginService.isValidUser(login, password)){
+            loginService.login(login,password);
             return Response.status(Response.Status.OK).build();
         }else {
-            return Response.status(Response.Status.NOT_FOUND).build();
+            return Response.status(Response.Status.UNAUTHORIZED).build();
         }
     }
 }
