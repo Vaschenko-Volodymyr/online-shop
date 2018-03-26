@@ -1,12 +1,12 @@
 package com.hebron.onlineshop.database;
 
-import com.hebron.onlineshop.dao.interfaces.User;
 import org.springframework.stereotype.Repository;
+
+import java.sql.Connection;
+import java.sql.SQLException;
 
 @Repository
 public interface Database {
 
-    User getUserById(int id);
-
-    // more methods
+    Connection getConnection() throws SQLException;
 }
