@@ -13,7 +13,7 @@ public class LoginServiceImp implements LoginService {
 
     @Override
     public boolean isValidUser(String login, String password) {
-        return false;
+        return true;
     }
 
     @Override
