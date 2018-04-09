@@ -1,8 +1,8 @@
 package com.hebron.onlineshop;
 
-import com.hebron.onlineshop.migration.Migration;
-import com.hebron.onlineshop.migration.MigrationV01;
-import com.hebron.onlineshop.migration.MigrationV02;
+import com.hebron.onlineshop.data.database.migration.Migration;
+import com.hebron.onlineshop.data.database.migration.MigrationV01;
+import com.hebron.onlineshop.data.database.migration.MigrationV02;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
 import org.springframework.boot.autoconfigure.SpringBootApplication;

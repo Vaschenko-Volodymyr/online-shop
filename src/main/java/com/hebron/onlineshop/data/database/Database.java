@@ -1,4 +1,4 @@
-package com.hebron.onlineshop.database;
+package com.hebron.onlineshop.data.database;
 
 import org.springframework.stereotype.Repository;
 

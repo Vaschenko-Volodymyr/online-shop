@@ -1,7 +1,8 @@
 package com.hebron.onlineshop.controllers;
 
 import com.hebron.onlineshop.TestConfig;
-import com.hebron.onlineshop.controllers.interfaces.LoginController;
+import com.hebron.onlineshop.dto.AuthorizationDTO;
+import com.hebron.onlineshop.rest.controllers.interfaces.LoginController;
 import org.junit.Assert;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -22,10 +23,14 @@ public class LoginControllerTest {
 
     @Test
     public void testLogin(){
-        String login = "testUser";
-        String password = "12345678";
-
-        Response response = loginController.login(login,password);
+        Response response = loginController.login(getAuthorizationDTO("testUser", "12345678"));
         Assert.assertTrue(response.getStatus() == Response.Status.OK.getStatusCode());
+    }
+
+    private AuthorizationDTO getAuthorizationDTO(String login, String password) {
+        AuthorizationDTO dto = new AuthorizationDTO();
+        dto.setLogin(login);
+        dto.setPassword(password);
+        return dto;
     }
 }

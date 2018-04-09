@@ -1,4 +1,4 @@
-package com.hebron.onlineshop.database;
+package com.hebron.onlineshop.data.database;
 
 import java.sql.Connection;
 import java.sql.DriverManager;
@@ -12,7 +12,7 @@ public class MySQLDatabase implements Database, AutoCloseable {
     private Connection connection;
 
     @Override
-    public Connection getConnection() throws SQLException {
+    public synchronized Connection getConnection() throws SQLException {
         connection = DriverManager.getConnection(url, username, password);
         System.out.println("Connected to database!");
         return connection;

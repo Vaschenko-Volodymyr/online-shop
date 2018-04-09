@@ -1,4 +1,4 @@
-package com.hebron.onlineshop.dao.interfaces;
+package com.hebron.onlineshop.data.dao.interfaces;
 
 import java.util.Date;
 

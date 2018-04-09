@@ -1,4 +1,4 @@
-package com.hebron.onlineshop.migration;
+package com.hebron.onlineshop.data.database.migration;
 
 import java.sql.SQLException;
 
