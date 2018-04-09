@@ -13,6 +13,8 @@ import org.springframework.test.context.support.AnnotationConfigContextLoader;
 
 import javax.ws.rs.core.Response;
 
+import static org.junit.Assert.assertTrue;
+
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(classes = TestConfig.class, loader = AnnotationConfigContextLoader.class)
 
@@ -24,7 +26,13 @@ public class LoginControllerTest {
     @Test
     public void testLogin(){
         Response response = loginController.login(getAuthorizationDTO("testUser", "12345678"));
-        Assert.assertTrue(response.getStatus() == Response.Status.OK.getStatusCode());
+        assertTrue(response.getStatus() == Response.Status.OK.getStatusCode());
+    }
+
+    @Test
+    public void testWrongCredentials() {
+        Response response = loginController.login(getAuthorizationDTO("", ""));
+        assertTrue(response.getStatus() == Response.Status.BAD_REQUEST.getStatusCode());
     }
 
     private AuthorizationDTO getAuthorizationDTO(String login, String password) {
