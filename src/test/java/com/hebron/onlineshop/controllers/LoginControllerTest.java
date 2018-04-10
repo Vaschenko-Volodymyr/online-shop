@@ -2,8 +2,8 @@ package com.hebron.onlineshop.controllers;
 
 import com.hebron.onlineshop.TestConfig;
 import com.hebron.onlineshop.dto.AuthorizationDTO;
-import com.hebron.onlineshop.rest.controllers.interfaces.LoginController;
-import org.junit.Assert;
+import com.hebron.onlineshop.dto.ResponseDTO;
+import com.hebron.onlineshop.rest.controllers.LoginController;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -25,14 +25,14 @@ public class LoginControllerTest {
 
     @Test
     public void testLogin(){
-        Response response = loginController.login(getAuthorizationDTO("testUser", "12345678"));
-        assertTrue(response.getStatus() == Response.Status.OK.getStatusCode());
+        ResponseDTO response = loginController.login(getAuthorizationDTO("testUser", "12345678"));
+        assertTrue(response.getResponseCode() == Response.Status.OK.getStatusCode());
     }
 
     @Test
     public void testWrongCredentials() {
-        Response response = loginController.login(getAuthorizationDTO("", ""));
-        assertTrue(response.getStatus() == Response.Status.BAD_REQUEST.getStatusCode());
+        ResponseDTO response = loginController.login(getAuthorizationDTO("", ""));
+        assertTrue(response.getResponseCode() == Response.Status.BAD_REQUEST.getStatusCode());
     }
 
     private AuthorizationDTO getAuthorizationDTO(String login, String password) {

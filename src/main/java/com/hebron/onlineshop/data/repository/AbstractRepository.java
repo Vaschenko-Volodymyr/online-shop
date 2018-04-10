@@ -13,7 +13,7 @@ abstract class AbstractRepository {
 
     private final Database database = new MySQLDatabase();
 
-    protected boolean exequteQuery(String query) {
+    protected boolean executeQuery(String query) {
         try (Connection connection = database.getConnection(); Statement statement = connection.createStatement()) {
             statement.execute(query);
         } catch (SQLException e) {
