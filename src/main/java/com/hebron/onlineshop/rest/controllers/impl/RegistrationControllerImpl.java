@@ -7,6 +7,7 @@ import com.hebron.onlineshop.rest.services.RegistrationService;
 import com.hebron.onlineshop.rest.util.ResponseUtils;
 import com.hebron.onlineshop.util.Messages;
 import com.hebron.onlineshop.util.Validator;
+import com.hebron.onlineshop.util.VoidOperationResult;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -38,12 +39,14 @@ public class RegistrationControllerImpl implements RegistrationController {
         if (!validationResult.isValid()) {
             return ResponseUtils.buildBadRequest(
                     Messages.badRegistrationInfo(validationResult.getReason()));
-        }
-
-        if (registrationService.register(registration)) {
-            return ResponseUtils.buildOkResponse(Messages.SUCCESS);
         } else {
-            return ResponseUtils.buildBadRequest(Messages.ERROR);
+            VoidOperationResult result = registrationService.register(registration);
+
+            if (result.isSuccess()) {
+                return ResponseUtils.buildOkResponse(Messages.SUCCESS);
+            } else {
+                return ResponseUtils.buildBadRequest(Messages.NOT_IMPLEMENTED);
+            }
         }
     }
 }

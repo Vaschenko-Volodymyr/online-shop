@@ -1,44 +1,121 @@
 package com.hebron.onlineshop.controllers;
 
-import com.hebron.onlineshop.TestConfig;
-import com.hebron.onlineshop.dto.AuthorizationDTO;
 import com.hebron.onlineshop.dto.ResponseDTO;
 import com.hebron.onlineshop.rest.controllers.LoginController;
-import org.junit.Test;
-import org.junit.runner.RunWith;
+import com.hebron.onlineshop.util.Messages;
+import com.hebron.onlineshop.utils.AuthorizationTestData;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.test.context.ContextConfiguration;
-import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
-import org.springframework.test.context.support.AnnotationConfigContextLoader;
+import org.testng.annotations.DataProvider;
+import org.testng.annotations.Test;
 
-import javax.ws.rs.core.Response;
+import static com.hebron.onlineshop.util.Messages.badCredentialsMessage;
+import static com.hebron.onlineshop.util.Validator.emptyField;
+import static org.junit.Assert.assertEquals;
 
-import static org.junit.Assert.assertTrue;
+@Test
+public class LoginControllerTest extends UserControllerTest {
 
-@RunWith(SpringJUnit4ClassRunner.class)
-@ContextConfiguration(classes = TestConfig.class, loader = AnnotationConfigContextLoader.class)
+    private static final String LOGIN_CONTROLLER_DATA = "loginControllerTest";
 
-public class LoginControllerTest {
+    private static final String LOGIN = "login";
+    private static final String PASSWORD = "password";
 
     @Autowired
     private LoginController loginController;
 
-    @Test
-    public void testLogin(){
-        ResponseDTO response = loginController.login(getAuthorizationDTO("testUser", "12345678"));
-        assertTrue(response.getResponseCode() == Response.Status.OK.getStatusCode());
+    @DataProvider(name = LOGIN_CONTROLLER_DATA)
+    public Object[][] getLoginData() {
+        return new Object[][]{
+
+                // positive test case
+                {new AuthorizationTestData()
+                        .withLogin(USER_LOGIN)
+                        .withPassword(USER_PASSWORD)
+                        .shouldPass(true)
+                        .withExpectedHTTPCode(200)},
+
+                // negative test cases
+                {new AuthorizationTestData()
+                        .withLogin("nonexistent" + USER_LOGIN)
+                        .withPassword(USER_PASSWORD)
+                        .shouldPass(false)
+                        .withExpectedHTTPCode(400)
+                        .withExpectedErrorMessage(Messages.WRONG_CREDENTIALS)},
+
+                {new AuthorizationTestData()
+                        .withLogin(USER_LOGIN)
+                        .withPassword("nonexistent" + USER_PASSWORD)
+                        .shouldPass(false)
+                        .withExpectedHTTPCode(400)
+                        .withExpectedErrorMessage(Messages.WRONG_CREDENTIALS)},
+
+                {new AuthorizationTestData()
+                        .withLogin("nonexistent" + USER_LOGIN)
+                        .withPassword("nonexistent" + USER_PASSWORD)
+                        .shouldPass(false)
+                        .withExpectedHTTPCode(400)
+                        .withExpectedErrorMessage(Messages.WRONG_CREDENTIALS)},
+
+                {new AuthorizationTestData()
+                        .withLogin(USER_LOGIN)
+                        .withPassword("")
+                        .shouldPass(false)
+                        .withExpectedHTTPCode(400)
+                        .withExpectedErrorMessage(badCredentialsMessage(emptyField(PASSWORD)))},
+
+                {new AuthorizationTestData()
+                        .withLogin(USER_LOGIN)
+                        .shouldPass(false)
+                        .withExpectedHTTPCode(400)
+                        .withExpectedErrorMessage(badCredentialsMessage(emptyField(PASSWORD)))},
+
+                {new AuthorizationTestData()
+                        .withLogin("")
+                        .withPassword(USER_PASSWORD)
+                        .shouldPass(false)
+                        .withExpectedHTTPCode(400)
+                        .withExpectedErrorMessage(badCredentialsMessage(emptyField(LOGIN)))},
+
+                {new AuthorizationTestData()
+                        .withPassword(USER_PASSWORD)
+                        .shouldPass(false)
+                        .withExpectedHTTPCode(400)
+                        .withExpectedErrorMessage(badCredentialsMessage(emptyField(LOGIN)))},
+
+                {new AuthorizationTestData()
+                        .withLogin("")
+                        .withPassword("")
+                        .shouldPass(false)
+                        .withExpectedHTTPCode(400)
+                        .withExpectedErrorMessage(badCredentialsMessage(emptyField(LOGIN)))},
+
+                {new AuthorizationTestData()
+                        .withLogin("")
+                        .shouldPass(false)
+                        .withExpectedHTTPCode(400)
+                        .withExpectedErrorMessage(badCredentialsMessage(emptyField(LOGIN)))},
+
+                {new AuthorizationTestData()
+                        .withPassword("")
+                        .shouldPass(false)
+                        .withExpectedHTTPCode(400)
+                        .withExpectedErrorMessage(badCredentialsMessage(emptyField(LOGIN)))},
+
+                {new AuthorizationTestData()
+                        .shouldPass(false)
+                        .withExpectedHTTPCode(400)
+                        .withExpectedErrorMessage(badCredentialsMessage(emptyField(LOGIN)))}
+        };
     }
 
-    @Test
-    public void testWrongCredentials() {
-        ResponseDTO response = loginController.login(getAuthorizationDTO("", ""));
-        assertTrue(response.getResponseCode() == Response.Status.BAD_REQUEST.getStatusCode());
-    }
+    @Test(dataProvider = LOGIN_CONTROLLER_DATA)
+    public void loginTest(AuthorizationTestData testData) {
+        ResponseDTO response = loginController.login(testData.getAuthorization());
 
-    private AuthorizationDTO getAuthorizationDTO(String login, String password) {
-        AuthorizationDTO dto = new AuthorizationDTO();
-        dto.setLogin(login);
-        dto.setPassword(password);
-        return dto;
+        assertEquals(testData.getExpectedHttpCode(), response.getResponseCode());
+
+        if (!testData.isPositive()) {
+            assertEquals(testData.getExpectedErrorMessage(), response.getErrorMessage());
+        }
     }
 }

@@ -2,9 +2,6 @@ package com.hebron.onlineshop.rest.util;
 
 import com.hebron.onlineshop.dto.ResponseDTO;
 
-import javax.ws.rs.core.MediaType;
-import javax.ws.rs.core.Response;
-
 /**
  * Utils for the responses.
  */

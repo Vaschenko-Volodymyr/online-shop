@@ -1,8 +1,9 @@
 package com.hebron.onlineshop.rest.services;
 
 import com.hebron.onlineshop.dto.AuthorizationDTO;
+import com.hebron.onlineshop.util.VoidOperationResult;
 
 public interface LoginService {
 
-    boolean login(AuthorizationDTO authorization);
+    VoidOperationResult login(AuthorizationDTO authorization);
 }

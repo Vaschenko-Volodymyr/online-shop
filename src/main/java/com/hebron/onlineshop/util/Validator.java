@@ -9,7 +9,7 @@ import java.util.regex.Pattern;
 
 public class Validator {
 
-    private static final String EMPTY_FIELD = "Empty %1$s field.";
+    private static final String EMPTY_FIELD = "Empty %1$s field";
     private static final String INCORRECT_EMAIL = "Your email did not match pattern: [text]@[text].[domain]";
     private static final String INCORRECT_PHONE = "Your phone did not match pattern: +[code][operator][identifiers]. " +
             "Example: +1-111-111-1111";
@@ -17,7 +17,7 @@ public class Validator {
     private static final Pattern VALID_EMAIL_ADDRESS_REGEX =
             Pattern.compile("^[A-Z0-9._%+-]+@[A-Z0-9.-]+\\.[A-Z]{2,6}$", Pattern.CASE_INSENSITIVE);
     private static final Pattern VALID_PHONE_NUMBER =
-            Pattern.compile("\\+\\d(-\\d{3}){2}-\\d{4}");
+            Pattern.compile("\\+\\d{2}-\\d{3}-\\d{3}-\\d{2}-\\d{2}");
 
     @Getter
     public static class ValidationResult {
@@ -80,7 +80,12 @@ public class Validator {
         return validationResult;
     }
 
-    private static String emptyField(String fieldName) {
+    /**
+     * Visible for testing reasons
+     * @param fieldName name of parameter which is empty
+     * @return concatenated error message
+     */
+    public static String emptyField(String fieldName) {
         return String.format(EMPTY_FIELD, fieldName);
     }
 

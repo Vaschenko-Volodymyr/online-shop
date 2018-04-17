@@ -1,7 +1,7 @@
 package com.hebron.onlineshop.dto.utils;
 
-import com.hebron.onlineshop.util.Day;
-import com.hebron.onlineshop.util.Month;
+import com.hebron.onlineshop.util.units.Day;
+import com.hebron.onlineshop.util.units.Month;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;

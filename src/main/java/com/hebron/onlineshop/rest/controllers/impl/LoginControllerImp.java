@@ -7,6 +7,7 @@ import com.hebron.onlineshop.rest.services.LoginService;
 import com.hebron.onlineshop.rest.util.ResponseUtils;
 import com.hebron.onlineshop.util.Messages;
 import com.hebron.onlineshop.util.Validator;
+import com.hebron.onlineshop.util.VoidOperationResult;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -34,18 +35,15 @@ public class LoginControllerImp implements LoginController {
         log.info("New login request");
 
         Validator.ValidationResult validationResult = Validator.validateLoginCredentials(authorization);
-        if (validationResult.isValid()) {
+        if (!validationResult.isValid()) {
             return ResponseUtils.buildBadRequest(
-                    Messages.badCredentialsMessage(
-                            authorization.getLogin(),
-                            authorization.getPassword(),
-                            validationResult.getReason())
-            );
+                    Messages.badCredentialsMessage(validationResult.getReason()));
         } else {
-            if (loginService.login(authorization)) {
+            VoidOperationResult result = loginService.login(authorization);
+            if (result.isSuccess()) {
                 return ResponseUtils.buildOkResponse(Messages.SUCCESS);
             } else {
-                return ResponseUtils.buildBadRequest(Messages.ERROR);
+                return ResponseUtils.buildBadRequest(result.getErrorMessage());
             }
         }
     }

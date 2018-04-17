@@ -4,12 +4,10 @@ import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
 
-import java.io.Serializable;
-
 @Getter
 @Setter
 @ToString
-public class AuthorizationDTO extends ResponseDTO implements Serializable{
+public class AuthorizationDTO extends RequestDTO {
 
     private String login;
     private String password;

@@ -1,14 +1,10 @@
 package com.hebron.onlineshop.data.repository;
 
-import org.springframework.stereotype.Repository;
+import com.hebron.onlineshop.dto.AuthorizationDTO;
+import com.hebron.onlineshop.util.VoidOperationResult;
 
-@Repository
-public class CredentialsRepository extends AbstractRepository {
+public interface CredentialsRepository {
 
-    public boolean saveCredentials(String login, String password){
-        String query = "INSERT INTO credentials VALUES(" +
-                login + "," +
-                password + ")";
-        return executeQuery(query);
-    }
+    VoidOperationResult checkCredentials(AuthorizationDTO authorization);
+    VoidOperationResult saveCredentials(AuthorizationDTO authorization);
 }

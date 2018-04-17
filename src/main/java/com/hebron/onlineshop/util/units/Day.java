@@ -1,4 +1,4 @@
-package com.hebron.onlineshop.util;
+package com.hebron.onlineshop.util.units;
 
 import lombok.Getter;
 import lombok.Setter;
